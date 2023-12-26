@@ -8,16 +8,10 @@ axios.interceptors.request.use(
   async (config) => {
     const authTokens = JSON.parse(localStorage.getItem("authTokens"));
 
-    if (authTokens?.accessToken) {
+    if (authTokens?.access) {
       config.headers = {
         ...config.headers,
-        authorization: `Bearer ${authTokens?.accessToken}`,
-      };
-    }
-    if (config.data instanceof FormData) {
-      config.headers = {
-        ...config.headers,
-        "Content-Type": "multipart/form-data",
+        authorization: `Bearer ${authTokens?.access}`,
       };
     }
 
@@ -36,10 +30,10 @@ axios.interceptors.response.use(
 
       const result = await memoizedRefreshToken();
 
-      if (result?.accessToken) {
+      if (result?.access) {
         config.headers = {
           ...config.headers,
-          authorization: `Bearer ${result?.accessToken}`,
+          authorization: `Bearer ${result?.access}`,
         };
       }
 
@@ -49,4 +43,4 @@ axios.interceptors.response.use(
   }
 );
 
-export const axiosPrivate = axios;
+export const api = axios;

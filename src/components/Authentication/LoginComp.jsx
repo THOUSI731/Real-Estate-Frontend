@@ -4,6 +4,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { userLogin } from '../../features/auth/authActions';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: "absolute",
@@ -20,6 +21,7 @@ const LoginComp = ({path}) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -40,7 +42,7 @@ const LoginComp = ({path}) => {
   }
   const handleSubmit = (e) =>{
     e.preventDefault()
-    dispatch(userLogin({email:formData.email,password:formData.password}))
+    dispatch(userLogin({email:formData.email,password:formData.password,navigate}))
   }
   return (
     <>

@@ -12,12 +12,13 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const pages = ["Properties"];
 const settings = ["Profile", "Dashboard", "Logout"];
 
-const NavbarComp = () => {
+const NavbarComp = ({children}) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate=useNavigate()
@@ -30,7 +31,7 @@ const NavbarComp = () => {
   };
 
   const handleCloseNavMenu = () => {
-    navigate("/properties")
+    navigate("/")
     setAnchorElNav(null);
   };
 
@@ -42,7 +43,6 @@ const NavbarComp = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -58,7 +58,7 @@ const NavbarComp = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Real Estate
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -113,19 +113,20 @@ const NavbarComp = () => {
               color: "inherit",
               textDecoration: "none",
             }}
-          >
+            >
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+              key={page}
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
               </Button>
             ))}
+            {children}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

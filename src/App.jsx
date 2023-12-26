@@ -3,6 +3,7 @@ import { ThemeProvider } from '@emotion/react'
 import {theme} from './Theme/muiTheme'
 import HomePage from './Pages/HomePage'
 import PropertyDetails from './Pages/PropertyDetails'
+import PropertyFormComp from './components/Property/PropertyFormComp'
 function App() {
 
   return (
@@ -12,7 +13,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<HomePage/>} />
         <Route path='/register' element={<HomePage/>} />
-        <Route path='/properties' element={<HomePage/>} />
+        <Route path='/' element={<HomePage/>} />
         <Route path='/property/:id' element={<PropertyDetails/>} />
       </Routes>
     </Router>

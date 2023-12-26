@@ -1,26 +1,23 @@
+import axios from "axios";
 import { axiosPublic } from "./axiosPublic";
 import mem from "mem";
 
 const refreshTokenFn = async () => {
-  const authTokens = JSON.parse(localStorage.getItem("authTokens"));
-
+  const authTokens = JSON.parse(localStorage.getItem("authTokens") ? localStorage.getItem("authTokens") : null);
   try {
-    const response = await axiosPublic.post("/token/refresh/", {
-      refreshToken: authTokens?.refreshToken,
+    const response = await axios.post("/token/refresh/", {
+      refresh: authTokens?.refresh,
     });
 
-    const { authTokens } = response.data;
-
-    if (!authTokens?.accessToken) {
+    if (!response.data?.access) {
       localStorage.removeItem("authTokens");
-      localStorage.removeItem("user");
     }
 
-    localStorage.setItem("authTokens", JSON.stringify(authTokens));
+    localStorage.setItem("authTokens", JSON.stringify(response.data));
 
     return authTokens;
   } catch (error) {
-    localStorage.removeItem("session");
+    localStorage.removeItem("authTokens");
     localStorage.removeItem("user");
   }
 };

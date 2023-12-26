@@ -35,10 +35,14 @@ const authSlice = createSlice({
         state.error=null;
       })
       .addCase(userLogin.fulfilled,(state,{payload})=>{
+        console.log(payload);
         state.loading=false;
         state.error=null;
         state.userInfo=jwtDecode(payload.access);
         state.userToken=payload
+        localStorage.clear()
+        localStorage.setItem("authTokens",JSON.stringify(payload));
+        console.log(JSON.parse(localStorage.getItem("authTokens")));
       })
       .addCase(userLogin.rejected,(state,{payload})=>{
         state.loading=false;

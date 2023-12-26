@@ -1,4 +1,3 @@
-import React from 'react'
 import NavbarComp from '../components/Home/NavbarComp'
 import PropertDetailComp from '../components/Property/PropertDetailComp'
 

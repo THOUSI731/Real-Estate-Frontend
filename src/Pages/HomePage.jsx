@@ -9,7 +9,6 @@ const HomePage = () => {
     const location = useLocation()
   return (
     <>
-    <NavbarComp/>
     <LoginComp path={location.pathname} />
     <SignupComp path={location.pathname}/>
     <PropertyComp path={location.pathname}/>

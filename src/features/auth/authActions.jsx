@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axiosPublic } from "../../common/axiosPublic";
+import { ACCOUNT_BASE_URL } from "../../utils/baseapi";
 
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -8,7 +9,7 @@ export const registerUser = createAsyncThunk(
     const {values:formData} = values;
     try {
       const response = await axios.post(
-        "http://localhost:8000/accounts/register/",
+        ACCOUNT_BASE_URL + "register/",
         formData
       );
       console.log(response.data);
@@ -28,15 +29,19 @@ export const registerUser = createAsyncThunk(
 
 export const userLogin = createAsyncThunk(
   "auth/login",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password,navigate }, { rejectWithValue }) => {
     console.log(email,password);
     try {
       const response = await axiosPublic.post(
-        "http://localhost:8000/accounts/login/",
+        ACCOUNT_BASE_URL +"login/",
         { email, password }
       );
       // store user's token in local storage
       localStorage.setItem("authTokens", response.data);
+      console.log(response.status);
+      if(response.status === 200){
+        navigate("/")
+      }
       return response.data;
     } catch (error) {
         console.log(error);
