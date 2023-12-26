@@ -17,7 +17,7 @@ const propertySlice = createSlice({
       .addCase(listProperties.pending, (state) => {
         state.loading = true;
         state.error = null;
-        state.error = null;
+        state.message = null;
       })
       .addCase(listProperties.fulfilled, (state, {payload}) => {
         state.loading = false;
