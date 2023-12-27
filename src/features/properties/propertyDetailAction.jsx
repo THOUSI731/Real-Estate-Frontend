@@ -20,3 +20,18 @@ export const getProperty = createAsyncThunk(
     }
   }
 );
+export const createUnit = createAsyncThunk(
+  "createUnit",
+  async (args, { rejectWithValue }) => {
+    const {id,values} =args;
+    try {
+      const response = await api.post(ADMIN_BASE_URL + `property/${id}/unit/`,values);
+      console.log(response);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+

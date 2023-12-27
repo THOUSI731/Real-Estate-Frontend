@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getProperty } from "./propertyDetailAction";
+import { createProperty } from "./propertyActions";
 
 const initialState = {
   loading: false,
@@ -21,6 +22,19 @@ const propertyDetailSlice = createSlice({
         state.propertyDetails = payload;
       })
       .addCase(getProperty.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      });
+    builder
+      .addCase(createProperty.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createProperty.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.propertyDetails.property_units.push(payload);
+      })
+      .addCase(createProperty.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

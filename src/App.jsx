@@ -4,10 +4,14 @@ import {theme} from './Theme/muiTheme'
 import HomePage from './Pages/HomePage'
 import PropertyDetails from './Pages/PropertyDetails'
 import UnitDetailPage from './Pages/UnitDetails'
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 function App() {
 
   return (
     <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
@@ -19,6 +23,7 @@ function App() {
           </Routes>
         </Router>
       </ThemeProvider>
+    </LocalizationProvider>
     </>
   );
 }

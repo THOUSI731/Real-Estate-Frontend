@@ -4,6 +4,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import { createUnit } from "../../features/properties/propertyDetailAction";
+import { useDispatch, useSelector } from "react-redux";
+import { listUsers } from "../../features/users/userAction";
 
 const style = {
   position: "absolute",
@@ -17,27 +21,48 @@ const style = {
   p: 4,
 };
 
-const UnitFormData = ({setModalOpen}) => {
-    var open=true
+const UnitFormData = ({id,modalOpen,setModalOpen}) => {
+    const {users}=useSelector((state)=>state.users)
     const [formData,setFormData]=React.useState({
-
+        unit_type:"",
+        rent_cost:"",
+        features:[],
+        unit_status:"",
+        user:"",
+        start_date:new Date(),
+        end_date:new Date(),
+        monthly_rent_date:new Date()
     })
-    const handleInputChange = (e) =>{
-        const {name,value} = e.target
-        setFormData({
-            ...formData,
-            [name]:value
-        })
-    }
+    const handleInputChange = (event) => {
+      const { name, value } = event.target;
+
+      if (name === "features") {
+        setFormData((prevDetails) => ({
+          ...prevDetails,
+          [name]: value.split("\n").map((feature) => feature.trim()),
+        }));
+      } else {
+        setFormData((prevDetails) => ({
+          ...prevDetails,
+          [name]: value,
+        }));
+      }
+    };
+    const dispatch=useDispatch()
     const handleSubmit = (e) =>{
         e.preventDefault()
+        dispatch(createUnit({id,values:formData}))
     }
+    React.useEffect(()=>{
+        dispatch(listUsers())
+    },[])
+    console.log(users);
 
   return (
     <>
       <div>
         <Modal
-          open={open}
+          open={modalOpen}
           onClose={() => setModalOpen(false)}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -55,7 +80,7 @@ const UnitFormData = ({setModalOpen}) => {
               }}
             >
               <TextField
-                label="Property Name"
+                label="Rent Cost"
                 variant="outlined"
                 name="rent_cost"
                 value={formData.rent_cost}
@@ -64,12 +89,12 @@ const UnitFormData = ({setModalOpen}) => {
                 margin="normal"
               />
               <FormControl fullWidth variant="outlined" margin="normal">
-                <InputLabel htmlFor="property-type">Property Type</InputLabel>
+                <InputLabel htmlFor="property-type">Unit Type</InputLabel>
                 <Select
-                  label="Property Type"
-                  id="property-type"
+                  label="Unit Type"
+                  id="unit-type"
                   name="unit_type"
-                  value={formData.property_type}
+                  value={formData.unit_type}
                   onChange={handleInputChange}
                 >
                   <MenuItem value="1bhk">1 BHK</MenuItem>
@@ -79,7 +104,7 @@ const UnitFormData = ({setModalOpen}) => {
                 </Select>
               </FormControl>
               <FormControl fullWidth variant="outlined" margin="normal">
-                <InputLabel htmlFor="property-type">Property Type</InputLabel>
+                <InputLabel htmlFor="property-type">Unit Status</InputLabel>
                 <Select
                   label="Property Type"
                   id="property-type"
@@ -92,24 +117,60 @@ const UnitFormData = ({setModalOpen}) => {
                 </Select>
               </FormControl>
               <TextField
-                label="Address"
-                variant="outlined"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                fullWidth
-                margin="normal"
-              />
-              <TextField
                 label="Features"
                 variant="outlined"
                 name="features"
-                value={formData.features.join("\n")}
+                // value={formData.features.join("\n")}
                 onChange={handleInputChange}
                 fullWidth
                 multiline
                 rows={4}
                 margin="normal"
+              />
+              <FormControl fullWidth variant="outlined" margin="normal">
+                <InputLabel htmlFor="user-list">User List</InputLabel>
+                <Select
+                  label="User List"
+                  id="user-list"
+                  name="user"
+                  value={formData.user}
+                  onChange={handleInputChange}
+                >
+                    {users && users.tenants?.length > 0 && users.tenants?.map((user)=>(
+                        <MenuItem key={user.id} value={user.email}>{user.full_name}</MenuItem>
+
+                    ))}
+                </Select>
+              </FormControl>
+              <DatePicker
+                name="start_date"
+                sx={{ my: 1 }}
+                onChange={(date) =>
+                  setFormData({ ...formData, start_date: date })
+                }
+                slotProps={(props) => (
+                  <TextField value={formData.start_date} {...props} />
+                )}
+              />
+              <DatePicker
+                name="end_date"
+                sx={{ my: 1 }}
+                onChange={(date) =>
+                  setFormData({ ...formData, start_date: date })
+                }
+                slotProps={(props) => (
+                  <TextField value={formData.start_date} {...props} />
+                )}
+              />
+              <DatePicker
+                name="monthly_rent_date"
+                sx={{ my: 1 }}
+                onChange={(date) =>
+                  setFormData({ ...formData, start_date: date })
+                }
+                slotProps={(props) => (
+                  <TextField value={formData.start_date} {...props} />
+                )}
               />
               <Button onClick={() => setModalOpen(false)}>Cancel</Button>
               <Button type="submit" variant="contained" color="primary">

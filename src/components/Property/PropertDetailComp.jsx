@@ -21,18 +21,18 @@ const PropertDetailComp = ({search}) => {
   const {id}=useParams()
   const dispatch =useDispatch()
   const navigate = useNavigate()
-    const [openForm, setOpenForm] = useState(false);
   const { propertyDetails, loading } = useSelector(
     (state) => state.propertyDetails
   );
+  const [modalOpen,setModalOpen]=useState(false)
   useEffect(()=>{
     dispatch(getProperty({id,search}))
   },[search])
   const handleUnitClick = (u_id) => navigate(`/property/${id}/unit/${u_id}`)
-  console.log(propertyDetails);
       const handleFormClick = () => {
-      setOpenForm(true)
+      setModalOpen(true)
     }
+  
   return (
     <>
       <div
@@ -59,7 +59,7 @@ const PropertDetailComp = ({search}) => {
         <>
           {propertyDetails ? (
             <Grid container spacing={2} padding={1}>
-              <UnitFormData/>
+              <UnitFormData id={id} setModalOpen={setModalOpen} modalOpen={modalOpen}/>
               <Grid item xs={12} md={8} gap={2}>
                 <Card sx={{ display: "flex", flexDirection: "row" }}>
                   <CardMedia
